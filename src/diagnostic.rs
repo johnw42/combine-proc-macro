@@ -43,7 +43,7 @@ impl Incomplete {
                 break;
             }
         }
-        if trailing.len() > 0 {
+        if !trailing.is_empty() {
             Some(Incomplete {
                 trailing,
                 max_trailing: DEFAULT_MAX_TRAILING,

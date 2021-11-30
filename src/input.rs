@@ -65,10 +65,7 @@ impl Input {
                     group.stream().into_iter(),
                     close.map(|c| Token::Delim(c, group.span())),
                 ));
-                match open {
-                    Some(c) => Some(Token::Delim(c, group.span())),
-                    None => None,
-                }
+                open.map(|c| Token::Delim(c, group.span()))
             }
         }
     }
@@ -205,7 +202,7 @@ impl Token {
 
     pub fn span(&self) -> Span {
         match self {
-            Token::Delim(_, span) => span.clone(),
+            Token::Delim(_, span) => *span,
             Token::Punct(tok) => tok.span(),
             Token::Ident(tok) => tok.span(),
             Token::Literal(tok) => tok.span(),
@@ -218,7 +215,7 @@ impl PartialEq for Token {
         match (self, other) {
             (Token::Delim(l, _), Token::Delim(r, _)) => l == r,
             (Token::Punct(l), Token::Punct(r)) => l.as_char() == r.as_char(),
-            (Token::Ident(l), Token::Ident(r)) => l.to_string() == r.to_string(),
+            (Token::Ident(l), Token::Ident(r)) => l == r,
             (Token::Literal(l), Token::Literal(r)) => l.to_string() == r.to_string(),
             _ => false,
         }

@@ -79,7 +79,7 @@ where
         let position = input.position();
         match uncons(input) {
             PeekOk(tok) | CommitOk(tok) => match tok {
-                Token::Ident(ref ident) if ident.to_string() == self.0 => CommitOk(tok),
+                Token::Ident(ref ident) if ident == self.0 => CommitOk(tok),
                 _ => PeekErr(I::Error::empty(position).into()),
             },
             PeekErr(err) => PeekErr(err),
